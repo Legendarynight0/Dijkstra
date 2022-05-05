@@ -26,10 +26,27 @@ bool Graph::updateEdge(int, int) {
 }
 void Graph::show() {}
 
-void Graph ::add(int v, int u, int w) {
-	Pair* x = new Pair(u,w);
-	Pair* y = new Pair(v, w);
-	g.at(v).add(*x);
-	g.at(u).add(*y);
+void Graph ::add(string v, string u, int w) {
+	if (map.find(v) == map.end()) {
+		map[v] = map.size();
+		revMap[revMap.size()] =v;
+
+		LinkedList<Pair> t;
+		g.push_back(t);
+	}
+	if (map.find(u) == map.end()) {
+		map[u] = map.size();
+		revMap[revMap.size()] = u;
+
+		LinkedList<Pair> t;
+		g.push_back(t);
+	}
+	int i = map.find(v)->second; //index of v
+	int j = map.find(u)->second; //index of u
+	Pair x(j, w);
+	Pair y(i, w);
+	g.at(i).add(x);
+	g.at(j).add(y);
+
 
 }

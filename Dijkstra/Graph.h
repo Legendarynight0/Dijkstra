@@ -1,7 +1,7 @@
 #pragma once
 #include "LinkedList.cpp"
 #include <vector>
-
+#include <unordered_map>
 
 class Pair {
 public:
@@ -25,6 +25,9 @@ public:
 class Graph {
 public:
 	vector<LinkedList<Pair>> g ;
+	unordered_map<string, int> map;
+	unordered_map<int, string> revMap; //check for bidirectional map
+
 	//use stack to save path
 
 	bool visited[];
@@ -35,7 +38,7 @@ public:
 	~Graph();						//for deleteing graph
 
 
-	void add(int, int, int);			//adding edges
+	void add(string, string, int);			//adding edges
 	bool remove(int, int);			//return true if success && delete the edge
 	bool updateEdge(int, int);		//updating the W only
 	void show();					//show the entier graph
