@@ -1,7 +1,7 @@
 #include "LinkedList.h"
-
 #include <iostream>
 using namespace std;
+
 //Node functions
 //
 //
@@ -193,5 +193,10 @@ void LinkedList<T> ::show() {
 
 //get object of index i						[under construction]
 template <class T>
-T LinkedList<T> ::get(int i) {
+T LinkedList<T> ::get(int x) {
+	Node<T>* temp = head->next;
+	for (int i = 0; i < x && temp != NULL; i++){
+		temp = temp->next;
+	}
+	return temp->value;
 }

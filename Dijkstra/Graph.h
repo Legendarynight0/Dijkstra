@@ -3,18 +3,16 @@
 #include <vector>
 
 
-
 class Pair {
 public:
 	int v;
 	int w;
-
 	Pair(int, int);
 	Pair();
-	bool compare(Pair s);
 };
 
 class List {
+public:
 	int v;
 	int sum;
 	int prev;
@@ -26,7 +24,7 @@ class List {
 
 class Graph {
 public:
-	vector<LinkedList<Pair>>* g;
+	vector<LinkedList<Pair>> g ;
 	//use stack to save path
 
 	bool visited[];
