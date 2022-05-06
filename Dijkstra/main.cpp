@@ -2,20 +2,23 @@
 
 int main() {
 	Graph s;
-	s.add("cairo", "alex", 45);
-	s.add("alex", "luxor", 10);
-	s.add("luxor", "cairo", 3);
-	for (int i = 0; i < s.g.size(); i++){
-		cout << "Vertex number: " << s.revMap[i] << "\n";
-		for (int j = 0; j < s.g[i].size; j++){
-			cout << s.revMap[s.g.at(i).get(j).v] << " and the weight is: " << s.g.at(i).get(j).w << "\n";
-		}
 
+	s.add("0", "1", 2);
+	s.add("0", "2", 3);
+	s.add("1", "2", 10);
+	s.add("1", "3", 2);
+	s.add("2", "3", 4);
+	s.add("3","4",6);
+	s.add("3", "5", 1);
+	s.add("4", "5", 10);
+	//s.show();
+	s.dijkstra(0);
+	s.path(0,5);
+	while (!s.road.empty()) {
+		cout << " " << s.road.top()+1 << " ";
+		s.road.pop();
 	}
-	cout << "seccusse";
-	
-	
-	
+	//s.showList();
 	
 	
 	

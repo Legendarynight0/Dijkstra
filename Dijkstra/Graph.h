@@ -2,6 +2,10 @@
 #include "LinkedList.cpp"
 #include <vector>
 #include <unordered_map>
+#include <stack>
+#include <limits.h>
+#include <queue>
+
 
 class Pair {
 public:
@@ -14,7 +18,7 @@ public:
 class List {
 public:
 	int v;
-	int sum;
+	long sum;
 	int prev;
 
 	List();
@@ -27,10 +31,8 @@ public:
 	vector<LinkedList<Pair>> g ;
 	unordered_map<string, int> map;
 	unordered_map<int, string> revMap; //check for bidirectional map
-
-	//use stack to save path
-
-	bool visited[];
+	List* ls;
+	stack <int> road;
 
 	//Graph functions
 	Graph();
@@ -42,10 +44,12 @@ public:
 	bool remove(int, int);			//return true if success && delete the edge
 	bool updateEdge(int, int);		//updating the W only
 	void show();					//show the entier graph
-
+	void test();
 	//algorithm function
-	int dijkstra(int, int);			//it will update a LIst to solve the problem
-	int path(int);				   //recusivly call to find the path and return it to stack if there is 
+	void dijkstra(int);			//it will update a List to solve the problem
+	void clearList(int);		//this clear or create list for dijkstra algorithm, it is used only in dijkstra 
+	void showList();
+	void path(int,int);				   //recusivly call to find the path and return it to stack if there is 
 
 };
 
