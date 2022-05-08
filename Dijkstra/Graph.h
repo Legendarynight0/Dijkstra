@@ -5,7 +5,7 @@
 #include <stack>
 #include <limits.h>
 #include <queue>
-
+#include <string>
 
 class Pair {
 public:
@@ -33,6 +33,8 @@ public:
 	unordered_map<int, string> revMap; //check for bidirectional map
 	List* ls;
 	stack <int> road;
+	int temp; //delete later
+
 
 	//Graph functions
 	Graph();
@@ -44,12 +46,12 @@ public:
 	bool remove(int, int);			//return true if success && delete the edge
 	bool updateEdge(int, int);		//updating the W only
 	void show();					//show the entier graph
-	void test();
+	int test();
 	//algorithm function
 	void dijkstra(int);			//it will update a List to solve the problem
 	void clearList(int);		//this clear or create list for dijkstra algorithm, it is used only in dijkstra 
 	void showList();
-	void path(int,int);				   //recusivly call to find the path and return it to stack if there is 
+	void path(int);				   //recusivly call to find the path and return it to stack if there is 
 
 };
 

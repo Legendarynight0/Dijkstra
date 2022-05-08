@@ -78,57 +78,60 @@ void Graph::clearList(int v) {
 }
 void Graph::showList() {
 	for (int i = 0; i < g.size(); i++) {
-		cout << "vertex: " << i << " cost: " << ls[i].sum << " prev: " << ls[i].prev <<"\n";
+		cout << "vertex: " << revMap[i] << " cost: " << ls[i].sum << " prev: " << revMap[ls[i].prev] <<"\n";
 	}
+	cout << "\n";
 }
 void Graph::dijkstra(int index) {
 	clearList(index);
 	queue<int> s;
-	bool* visited = new bool[g.size()];
-	for (int i = 0; i < g.size(); i++)
-	{
-		visited[i] = false;
-	}
 	s.push(index);
-	visited[index] = true;
 	while (!s.empty()) {
+		
 		int v = s.front();
+		//cout << "loop of:  " << revMap[v] << "\n";
 		s.pop();
-		for (int i = 0; i < g.at(v).size; i++) {
-			int u = g.at(v).get(i).v;
-			long w = g.at(v).get(i).w;
-			if (!visited[u]) {
-				s.push(u);
-				visited[u] = true;
+		for (int i = 0; i < g.at(v).size; i++){
+			int x = g.at(v).get(i).v;
+			int y = g.at(v).get(i).w;
+			if (y + ls[v].sum < ls[x].sum) {
+				//cout << revMap[x] << " this will change  " << revMap[ls[x].prev] << " to " << revMap[v] << "\n";
+				ls[x].sum = y + ls[v].sum;
+				ls[x].prev = v;
+				s.push(x);
 			}
-			if (ls[v].sum + w < ls[u].sum) {
-				ls[u].prev = v;
-				ls[u].sum = w + ls[v].sum;
-			}
-
 		}
-
+		//showList();
+		
 	}
-
-	
+	//show();
+	cout << "finished dijkstra function";
 }
-void Graph::path(int src,int dest) {
-	if (src == dest || dest == -1) {
-		road.push(src);
+
+void Graph::path(int dest) {
+	if (dest == 0) {
+		road.push(dest);
 		return;
 	}
 	else {
+		if (ls[dest].prev == -1) { road.push(-1); return; }
 		road.push(dest);
-		path(src, ls[dest].prev);
+		path(ls[dest].prev);
 	}
 }
-void Graph::test() {
+int Graph::test() {
 	int n,m;
 	cin >> n >> m;
+	temp = n;
+
 	for (int i = 0; i < m; i++)
 	{
 		int v, u, w;
+		string x, y;
 		cin >> v >> u >> w;
-		//add(v, u, w);
+		x = std::to_string(v);
+		y = std::to_string(u);
+		add(x, y, w);
 	}
+	return n;
 }
