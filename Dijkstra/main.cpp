@@ -11,7 +11,7 @@ int main() {
 		s.path(s.map[n]);
 		
 		while (!s.road.empty()) {
-			cout << s.revMap[s.road.top()] << " ";
+			cout << s.revMap[s.road.top()] <<" ";
 			s.road.pop();
 		}
 	}
