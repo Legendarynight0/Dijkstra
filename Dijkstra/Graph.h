@@ -1,11 +1,13 @@
 #pragma once
-#include "LinkedList.cpp"
+#include <iostream>
 #include <vector>
 #include <unordered_map>
 #include <stack>
 #include <limits.h>
 #include <queue>
 #include <string>
+
+using namespace std;
 
 class Pair {
 public:
@@ -28,7 +30,7 @@ public:
 
 class Graph {
 public:
-	vector<LinkedList<Pair>> g ;
+	vector<vector<Pair>> g ;
 	unordered_map<string, int> map;
 	unordered_map<int, string> revMap; //check for bidirectional map
 	List* ls;
@@ -44,15 +46,17 @@ public:
 
 	void add(string, string, int);			//adding edges
 	bool remove(int, int);			//return true if success && delete the edge
-	bool updateEdge(int, int);		//updating the W only
+	bool updateEdge(string, string,int);		//updating the W only
 	void show();					//show the entier graph
-	int test();
+	void test();
+	
 	//algorithm function
 	void dijkstra(int);			//it will update a List to solve the problem
 	void clearList(int);		//this clear or create list for dijkstra algorithm, it is used only in dijkstra 
 	void showList();
 	void path(int);				   //recusivly call to find the path and return it to stack if there is 
-
+	vector<vector<Pair>> loadGraph();
+	void saveGraph(vector<vector<Pair>>);
 };
 
 

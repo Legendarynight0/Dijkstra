@@ -1,27 +1,25 @@
 #include "C:\Users\omar_\source\repos\Dijkstra\Dijkstra\Graph.h"
 
 int main() {
-	Graph s;
-	string n = to_string(s.test());
-	s.dijkstra(0);
-	cout << "\n path is: \n";
-	if (s.map.find(n) == s.map.end()) {
-		cout << "-1";
-	}else{
-		s.path(s.map[n]);
-		
-		while (!s.road.empty()) {
-			cout << s.revMap[s.road.top()] <<" ";
-			s.road.pop();
+	Graph g;
+	g.test();
+	g.show();
+	while (true) {
+		cout << "Enter your current city \n";
+		string index;
+		cin >> index;
+		if (g.map.find(index) == g.map.end()) {
+			break;
 		}
+		else {
+			cout << "All distances to other cities: \n ";
+			g.dijkstra(g.map[index]);
+			g.showList();
+		}
+
 	}
-	
-	//s.show();
-	//s.showList();
 
 
-	cout << "\n \n program ended";
-	
 	return 0;
 }
 
