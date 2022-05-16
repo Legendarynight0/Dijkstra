@@ -26,6 +26,7 @@ Graph::Graph(int v){}
 Graph::~Graph() {}
 
 void Graph::add(string v, string u, int w) {
+	// don't add A C then C A
 	if (map.find(v) == map.end()) {
 		map[v] = map.size();
 		revMap[revMap.size()] = v;
@@ -40,6 +41,7 @@ void Graph::add(string v, string u, int w) {
 		vector<Pair> t;
 		g.push_back(t);
 	}
+	
 	int i = map.find(v)->second; //index of v
 	int j = map.find(u)->second; //index of u
 	Pair x(j, w);
@@ -49,20 +51,53 @@ void Graph::add(string v, string u, int w) {
 
 
 }
-bool Graph::remove(int, int) {
+bool Graph::removeEdge(int v,int u) {
+	bool x = false;
+	for (int i = 0; i < g.at(v).size(); i++) {
+		if (g.at(v).at(i).v == u) {
+			g.at(v).erase(g.at(v).begin() + i);
+			x = true;
+			break;
+		}
+
+	}
+	if (!x) {return false ; }
+	for (int i = 0; i < g.at(u).size(); i++) {
+		if (g.at(u).at(i).v == v) {
+			g.at(u).erase(g.at(u).begin() + i);
+			return true;
+		}
+
+	}
+	cout << "Error";
 	return false;
 }
-bool Graph::updateEdge(string v, string u, int w) {
+bool Graph::updateEdge() {
+	string v, u;
+	int w;
 	cout << "What is the Update?";
 	string choose;
 	cin >> choose;
 	if (choose == "Add") {
+		
+		cin >> v >> u >> w;
+		add(v, u, w);
+		return true;
 	}
-	else if(choose == "Remove") {
-		return remove(map[v],map[u]);
+	else if(choose == "Remove Edge") {
+		cin >> v >> u;
+		return removeEdge(map[v], map[u]);
+	}
+	else if (choose == "Remove Vertex") {
+		cin >> v;
+		while (g.at(map[v]).size() != 0) {
+			removeEdge(map[v], g.at(map[v]).at(0).v);
+		}
+			return true;
 	}
 	else if (choose == "update") {
 		if (map.find(v) == map.end() && map.find(u) == map.end()) {
+			cin >> v >> u >> w;
 			g.at(map[v]).at(map[u]).w = w;
 			g.at(map[u]).at(map[v]).w = w;
 			return true;
@@ -120,7 +155,7 @@ void Graph::dijkstra(int index) {
 		
 	}
 	//show();
-	cout << "finished dijkstra function";
+	cout << "finished dijkstra function \n";
 }
 
 void Graph::path(int dest) {
@@ -157,10 +192,14 @@ void Graph::test() {
 			}
 		}
 	}
-		string x, y;
 		//cin >> v >> u >> w;
 		//x = std::to_string(v);
 		//y = std::to_string(u);
 		//add(x, y, w);
+
+}
+
+
+void Graph::saveGraph(vector<vector<Pair>>) {
 
 }
