@@ -1,4 +1,4 @@
-#include "C:\Users\omar_\source\repos\Dijkstra\Dijkstra\Graph.h"
+#include "C:\Users\Legendary\source\repos\Dijkstra\Dijkstra\Graph.h"
 
 int main() {
 	Graph g;
