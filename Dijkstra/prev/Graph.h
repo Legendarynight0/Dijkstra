@@ -35,7 +35,7 @@ public:
 	unordered_map<int, string> revMap; //check for bidirectional map
 	List* ls;
 	stack <int> road;
-	int temp; //delete later
+	
 
 
 	//Graph functions
@@ -45,8 +45,9 @@ public:
 
 
 	void add(string, string, int);			//adding edges
-	bool remove(int, int);			//return true if success && delete the edge
-	bool updateEdge(string, string,int);		//updating the W only
+	bool removeEdge(int,int);			//return true if success && delete the edge
+	bool removeVertex(int);			//return true if success && delete the vertex
+	bool updateEdge();		//updating the W only
 	void show();					//show the entier graph
 	void test();
 	

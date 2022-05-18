@@ -3,7 +3,7 @@
 int main() {
 	Graph g;
 	g.test();
-	g.show();
+
 	while (true) {
 		cout << "Enter your current city \n";
 		string index;
@@ -48,3 +48,21 @@ s.add("2", "3", 4);
 s.add("3", "4", 6);
 s.add("3", "5", 1);
 s.add("4", "5", 10);*/
+
+
+
+
+
+
+
+
+
+
+
+
+// Last Edit
+//all lower case
+//dont add A C then C A
+//Load Save
+//Main function change
+//bouns 
