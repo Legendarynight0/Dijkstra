@@ -1,13 +1,9 @@
 #pragma once
-#pragma once
 #include <iostream>
 #include <vector>
 #include <unordered_map>
 #include <stack>
-#include <limits.h>
-#include <queue>
 #include <string>
-#include <fstream>
 using namespace std;
 
 class Pair {
@@ -32,46 +28,39 @@ public:
 class Graph {
 public:
 	vector<vector<Pair>> g;
-	unordered_map<string, int> map;
-	unordered_map<int, string> revMap; //check for bidirectional map
-	List* ls;
-	stack <int> road;
-	bool direct = false; //true then directed
+	unordered_map<string, int> map;			 //used to map string to int, O(1) get and add operation
+	unordered_map<int, string> revMap;		 //bidirectional map to retrive the original string, can be an array
+	List* ls;								 //List Class
+	stack <int> road;						 //stack for path
+	bool direct = false;					 //true then directed
 	string savingLoaction = "";
 
 
 	//Graph functions
 	Graph();
-	Graph(int);						//creating graph for specific amount of vertices
-	~Graph();						//for deleteing graph
+	Graph(int);								//creating graph for specific amount of vertices
+	~Graph();								//for deleteing graph
 
 
-	void add(string, string, int);			//adding edges
-	bool removeEdge(int, int);			//return true if success && delete the edge
-	void removeVertex(int);			//return true if success && delete the vertex
-	void updateEdge();		//updating the W only
-	void show();					//show the entier graph
+	void add(string, string, int);			//adding and converting vertex to integer type
+	void removeEdge(int, int);		
+	void removeVertex(int);			
+	void updateEdge();						//updating the W only, call delete edge and vertex
+	void show();							//show the entier graph
 	void test();
 
 	//algorithm function
-	void dijkstra(int);			//it will update a List to solve the problem
-	void clearList(int);		//this clear or create list for dijkstra algorithm, it is used only in dijkstra 
+	void dijkstra(int);						//it will update a List to solve the problem
+	void clearList(int);					//clear list for dijkstra
 	void showList(int);
-	void path(int,int);				   //recusivly call to find the path and return it to stack if there is 
+	void path(int, int);				   //recusivly call to find the path and return it to stack if there is,else output -1
 	void loadGraph();
-	void saveGraph( string);
+	void saveGraph(string);
 };
 
 
 
 
-
-
-// how to validate the algorithm?
-// important cases, if it is disconnected graph how should the algorithm behave
-// if there is two paths with the same value, can there be a problem in this?
-// what is the complexity of this algorithm?
-// create vector from scratch
 
 
 

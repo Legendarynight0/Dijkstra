@@ -1,8 +1,12 @@
 #include "C:\Users\Legendary\source\repos\Dijkstra\Dijkstra\Graph.h"
-#include<string>
-#include<iostream>
-#include<fstream>
-#include<set>
+#include <string>
+#include <iostream>
+#include <fstream>
+#include <set>
+#include <algorithm>
+#include <limits.h>
+#include <queue>
+
 using namespace std;
 
 Pair::Pair(int x, int y) {
@@ -24,7 +28,6 @@ List::~List() {
 }
 
 Graph::Graph() {
-	//g = new vector<LinkedList<Pair>>;
 
 }
 Graph::Graph(int v) {}
@@ -70,65 +73,81 @@ void Graph::add(string v, string u, int w) {
 		g.at(j).push_back(y);
 
 	}
-
-
 }
-bool Graph::removeEdge(int v, int u) {
-	bool x = false;
+
+void Graph::removeEdge(int v, int u) {
+	bool isDeleted = false;
 	for (int i = 0; i < g.at(v).size(); i++) {
 		if (g.at(v).at(i).v == u) {
-			cout << "we remove \n";
 			g.at(v).erase(g.at(v).begin() + i);
-			x = true;
-			break;
+			isDeleted = true;
 		}
-
 	}
+	if (!direct) {
+		for (int i = 0; i < g.at(u).size(); i++) {
+			if (g.at(u).at(i).v == v) {
+				g.at(u).erase(g.at(u).begin() + i);
+				isDeleted = true;
+			}
 
-	for (int i = 0; i < g.at(u).size(); i++) {
-		if (g.at(u).at(i).v == v) {
-			cout << "we remove \n";
-			g.at(u).erase(g.at(u).begin() + i);
-			return true;
 		}
-
 	}
-	cout << "Error";
-	return false;
+	
 }
 void Graph::updateEdge() {
 	string v, u;
 	int w;
-	cout << "What is the Update? 1.Add 2.Remove vector 3.Remove edge 4.Update";
+	cout << "What is the Update?\n 1.Add\n 2.Remove vertex\n 3.Remove edge\n 4.Update\n";
+	cout << "enter choice number : ";
 	int choose;
 	cin >> choose;
 	if (choose == 1) {
-
+		cout << "enter new vertex name : ";
 		cin >> v >> u >> w;
 		add(v, u, w);
+		show();
+
 	}
-	else if (choose ==2) {
+	else if (choose == 2) {
+		cout << "enter vertex name : ";
 		cin >> v;
 		removeVertex(map[v]);
+		show();
+
 	}
 	else if (choose == 3) {
+		cout << "enter source, destination of the edge : ";
 		cin >> v >> u;
-
-		while (g.at(map[v]).size() != 0) {
-			removeEdge(map[v], g.at(map[v]).at(0).v);
-		}
+		removeEdge(map[v], g.at(map[v]).at(0).v);
+		show();
 	}
-	else if (choose ==4) {
+	else if (choose == 4) {
 		if (map.find(v) == map.end() && map.find(u) == map.end()) {
 			cin >> v >> u >> w;
-			g.at(map[v]).at(map[u]).w = w;
-			g.at(map[u]).at(map[v]).w = w;
+			for (int i = 0; i < g.at(map[v]).size(); i++)
+			{
+				if (g.at(map[v]).at(i).v == map[u]) {
+					g.at(map[v]).at(i).w = w;
+					break;
+				}
+			}
+			if (!direct) {
+				for (int i = 0; i < g.at(map[u]).size(); i++)
+				{
+					if (g.at(map[u]).at(i).v == map[v]) {
+						g.at(map[u]).at(i).w = w;
+						break;
+					}
+				}
+			}
+
 		}
+		show();
 	}
 	else {
 		cout << "invalid\n";
+		return;
 	}
-	show();
 }
 void Graph::show() {
 	for (int i = 0; i < g.size(); i++) {
@@ -142,15 +161,8 @@ void Graph::show() {
 void Graph::showList(int v) {
 	if (ls[v].prev < 0) { cout << "no path to the city"; }
 	else {
-		cout << "Weight: " << revMap[v] << " cost: " << ls[v].sum;
+		cout << "cost: " << ls[v].sum;
 	}
-	//for (int i = 0; i < g.size(); i++) {
-	//	
-	//	if (ls[i].prev < 0) { cout << "No path to " <<revMap[i] << " prev: " << revMap[ls[i].prev] <<"\n"; }
-	//	else {
-	//		cout << "vertex: " << revMap[i] << " cost: " << ls[i].sum << " prev: " << revMap[ls[i].prev] << "\n";
-	//	}
-	//}
 	cout << "\n";
 }
 
@@ -171,81 +183,86 @@ void Graph::dijkstra(int index) {
 	while (!s.empty()) {
 
 		int v = s.front();
-		//cout << "loop of:  " << revMap[v] << "\n";
 		s.pop();
 		for (int i = 0; i < g.at(v).size(); i++) {
 			int x = g.at(v).at(i).v;
 			int y = g.at(v).at(i).w;
 			if (y + ls[v].sum < ls[x].sum) {
-				//cout << revMap[x] << " this will change  " << revMap[ls[x].prev] << " to " << revMap[v] << "\n";
 				ls[x].sum = y + ls[v].sum;
 				ls[x].prev = v;
 				s.push(x);
 			}
 		}
-		//showList();
-
 	}
-	//show();
-	//cout << "finished dijkstra function \n";
 }
 
 void Graph::path(int src, int dest) {
+	if (ls[dest].prev < 0) return;
+
 	if (dest == src) {
 		road.push(dest);
 		return;
 	}
 	else {
 		road.push(dest);
-		path(src,ls[dest].prev);
+		path(src, ls[dest].prev);
 	}
 }
 void Graph::test() {
-	string choose;
-	cout << "Load Graph or Create? \n";
+	cout << "1-Load Graph" << endl;
+	cout << "2-Create New" << endl;
+	cout << "enter choice number : ";
+	int choose;
 	cin >> choose;
-	transform(choose.begin(), choose.end(), choose.begin(), tolower);
-	if (choose == "load") {
+	if (choose == 1) {
 		vector<vector<Pair>> g;
 		loadGraph();
 		show();
 	}
-	else if (choose == "create") {
-		string dir;
-		cout << "directed or undirected Graph?\n";
+	else if (choose == 2) {
+		cout << "1-directed  Graph" << endl;
+		cout << "2-undirected Graph" << endl;
+		cout << "enter choice number : ";
+		int dir;
 		cin >> dir;
-		transform(dir.begin(), dir.end(), dir.begin(), tolower);
-		if (dir == "directed") { direct = true; }
-		else if (dir == "undirected") { direct = false; }
-		else { cout << "invalid, the Graph will be on default settings"; }
+		if (dir == 1) { direct = true; }
+		else if (dir == 2) { direct = false; }
+		else { cout << "invalid, the Graph will be on default settings\n"; }
 
 		int i = 1;
 		string v, u;
 		int  w;
 		int option;
-		while (true) {
-			cout << "Enter Data number: " << i++ << "\n";
+		bool finished = false;
+		while (!finished) {
+			cout << "Enter way(source, destination, weight) number " << i++ << ":\n";
 			cin >> v >> u >> w;
-			transform(v.begin(), v.end(), v.begin(), tolower);
-			transform(u.begin(), u.end(), u.begin(), tolower);
-			if (v == "- 1" || u == "- 1" || w == -1) {
-
-				cout << "Graph created \n";
-				
-
-				break;
-			}
-			else {
+			transform(v.begin(), v.end(), v.begin(), ::tolower);
+			transform(u.begin(), u.end(), u.begin(), ::tolower);
+			if (v != "-1" && u != "-1" && w != -1) {
 				add(v, u, w);
 			}
+			else
+				break;
+			cout << "Do you want to add another way?(y/n) ";
+			char in; cin >> in;
+			if (in == 'n') { 
+				break;
+			}
+			else if (in != 'y') {
+				cout << "invalid \n";
+				break;
+			}
+				
 		}
+
+		cout << "Graph created \n";
 	}
 
+}
 
-};
 
-
-void Graph::saveGraph( string filename) {
+void Graph::saveGraph(string filename) {
 	ofstream MyFile;
 	cout << "Enter Graph name:" << endl;
 	if (savingLoaction == "") {
@@ -254,9 +271,13 @@ void Graph::saveGraph( string filename) {
 	else {
 		filename = savingLoaction;
 	}
-	
 
-	MyFile.open(filename, ios::out | ios::app);
+	MyFile.open(filename, ios::out);
+	if (direct)
+		MyFile << "directed" << endl;
+	else
+		MyFile << "undirected" << endl;
+
 	for (int i = 0; i < g.size(); i++) {
 
 		for (int j = 0; j < g[i].size(); j++)
@@ -271,71 +292,65 @@ void Graph::saveGraph( string filename) {
 
 	MyFile.close();
 
-};
+}
 
 void  Graph::loadGraph() {
-		
-	string lines,filename;
+
+	string filename;
 	cout << "Enter the name of graph you want to load:" << endl;
 	cin >> filename;
 	savingLoaction = filename;
 	ifstream myfile(filename);
 
-	string dir;
-	cout << "directed or undirected Graph?\n";
-	cin >> dir;
-	transform(dir.begin(), dir.end(), dir.begin(), tolower);
-	if (dir == "directed") { direct = true; }
-	else if (dir == "undirected") { direct = false; }
-
 	if (myfile.is_open()) {
-		while (getline(myfile, lines)) {
-			string x = lines;
-			int begin=0;
+		string dir;
+		if (getline(myfile, dir))
+		{
+			if (dir == "directed") direct = true;
+			else direct = false;
+		}
+
+		string line;
+		while (getline(myfile, line)) {
+			int begin = 0;
 			string v, u;
 			int w = -1;
 			int num = 1;
-			for (int i = 0; i < x.size(); i++)
+			for (int i = 0; i < line.size(); i++)
 			{
-				if (x[i] == ' ') {
+				if (line[i] == ' ') {
 					if (num == 1) {
-						
-						v = x.substr(begin,i);
-						begin = i+1;
+
+						v = line.substr(begin, i);
+						begin = i + 1;
 						num++;
 					}
 					else if (num == 2) {
-						u = x.substr(begin, i-2);
+						u = line.substr(begin, i - 2);
 						begin = i;
 						num++;
-						w = stoi(x.substr(i + 1, x.size()));
-						
-
+						w = stoi(line.substr(i + 1, line.size()));
 						break;
 					}
-					
 				}
 			}
 			if (w != -1) {
 				add(v, u, w);
 			}
 		}
-		//direct = true;
 		myfile.close();
 	}
 	else {
 		cout << "The Graph doesn't exist" << endl;
 	}
-};
+}
 
 void Graph::removeVertex(int v) {
-	if (!direct) {
+	if (!direct)
+	{
 		while (g.at(v).size()) {
 			removeEdge(g.at(v).at(0).v, v);
 		}
 	}
 	g.at(v).clear();
-
-
-
 }

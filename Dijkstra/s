@@ -1,0 +1,21 @@
+undirected
+a b 3
+a c 5
+a t 13
+a l 19
+b a 3
+b c 10
+c a 5
+c b 10
+f g 8
+f k 6
+g f 8
+g k 23
+k f 6
+k l 30
+k g 23
+l k 30
+l t 50
+l a 19
+t l 50
+t a 13
