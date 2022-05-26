@@ -1,0 +1,4 @@
+1.when removing a vertex in directed Graph we should loop to delete all vertcies pointing to the deleted vertex.
+2.GUI.
+3.Refactoing.
+4.Create a visual representation for the Graph.
